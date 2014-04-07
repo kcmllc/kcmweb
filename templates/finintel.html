@@ -1,0 +1,197 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="row" xmlns="http://www.w3.org/1999/html">
+        <form action="{{ url_for('searchfinintel') }}" method="post" class="navbar-form pull-right" role="form">
+            <div class="form-group">
+                <input type="text" class="form-control" id="ticker" name="ticker" placeholder="Enter ticker">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-default pull-right">Search</button>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <img src="http://finviz.com/chart.ashx?t={{ overview[0].ticker }}&ty=c&ta=1&p=d&s=l" class="pull-right" style="height: 250px">
+    </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title" style="text-align: center">Company Overview</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Ticker</th>
+                        <th>Company Name</th>
+                        <th>Country</th>
+                        <th>Market Cap</th>
+                        <th>P/E Ratio</th>
+                        <th>Last Price</th>
+                        <th>Last Change</th>
+                        <th>Next Earnings Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for overview in overview %}
+                        <tr>
+                            <td>{{ overview.ticker}}</td>
+                            <td>{{ overview.company_name}}</td>
+                            <td>{{ overview.company_country}}</td>
+                            <td>{{ overview.market_cap}}M</td>
+                            <td>{{ overview.price_to_earnings}}</td>
+                            <td>{{ overview.last_price}}</td>
+                            <td>{{ overview.last_change}}</td>
+                            <td>{{ financial[0].next_earnings_date }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title" style="text-align: center">Profitability & Effectiveness</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Dividend Yield</th>
+                        <th>Return on Assets</th>
+                        <th>Return on Equity</th>
+                        <th>Return on Investment</th>
+                        <th>Current Ratio</th>
+                        <th>Quick Ratio</th>
+                        <th>Long Term Debt to Equity</th>
+                        <th>Debt to Equity</th>
+                        <th>Gross Margin</th>
+                        <th>Operating Margin</th>
+                        <th>Profit Margin</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for financial in financial %}
+                        <tr>
+                            <td>{{ financial.dividend_yield }}</td>
+                            <td>{{ financial.return_on_assets }}</td>
+                            <td>{{ financial.return_on_equity }}</td>
+                            <td>{{ financial.return_on_investment }}</td>
+                            <td>{{ financial.current_ratio }}</td>
+                            <td>{{ financial.quick_ratio }}</td>
+                            <td>{{ financial.long_term_debt_to_equity }}</td>
+                            <td>{{ financial.debt_to_equity }}</td>
+                            <td>{{ financial.gross_margin }}</td>
+                            <td>{{ financial.operating_margin }}</td>
+                            <td>{{ financial.profit_margin }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title" style="text-align: center">Valuation</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Forward Price to Earnings</th>
+                        <th>PEG Ratio</th>
+                        <th>Price to Sales</th>
+                        <th>Price to Book</th>
+                        <th>Price to Cash</th>
+                        <th>Price to FCF</th>
+                        <th>EPS Growth This Year</th>
+                        <th>EPS Growth Next Year</th>
+                        <th>EPS Growth Past 5 Years</th>
+                        <th>EPS Growth Next 5 Years</th>
+                        <th>Sales Growth Past 5 Years</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for valuation in valuation %}
+                        <tr>
+                            <td>{{ valuation.forward_price_to_earnings }}</td>
+                            <td>{{ valuation.price_earnings_growth }}</td>
+                            <td>{{ valuation.price_to_sales }}</td>
+                            <td>{{ valuation.price_to_book }}</td>
+                            <td>{{ valuation.price_to_cash }}</td>
+                            <td>{{ valuation.price_to_fcf }}</td>
+                            <td>{{ valuation.eps_growth_this_year }}</td>
+                            <td>{{ valuation.eps_growth_next_year }}</td>
+                            <td>{{ valuation.eps_growth_past_five_years }}</td>
+                            <td>{{ valuation.eps_growth_next_five_years}}</td>
+                            <td>{{ valuation.sales_growth_past_five_years }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title" style="text-align: center">Strategy Mapping & News</h3>
+            </div>
+            <div class="panel-body" ng-app="strategyMapApp">
+                <div><p id="mappingsaved" style="text-decoration-color: green"></p></div>
+                <div class="pull-right"><button></button></div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Company Sector</th>
+                        <th>Company Industry</th>
+                        <th>Economic Cycle Position</th>
+                        <th>Macro Strategy</th>
+                        <th>Tactical Strategy</th>
+                        <th>Guidance</th>
+                        <th>Portfolio</th>
+                        <th>Watchlist</th>
+                    </tr>
+                    </thead>
+                    <tbody  ng-controller="StrategyMapCtrl" ng-init="mapping.ticker='{{ overview[0].ticker}}'">
+                    <tr>
+                        <input type="hidden" value="{{ nonwtf_csrf_token() }}" id="csrftoken"/>
+                        <td>{{ overview[0].company_sector }}</td>
+                        <td>{{ overview[0].company_industry }}</td>
+                        <td><input type="text" ng-model="mapping.cycle_position" placeholder="{{ mapping.cycle_position }}"/></td>
+                        <td><input type="text" ng-model="mapping.macro_strategy" placeholder="{{ mapping.macro_strategy }}"/></td>
+                        <td><input type="text" ng-model="mapping.tactical_strategy" placeholder="{{ mapping.tactical_strategy }}"/></td>
+                        <td><input type="text" ng-model="mapping.guidance" placeholder="{{ mapping.guidance }}"/></td>
+                        <td><input type="checkbox" ng-model="mapping.portfolio" checked="{{ mapping.portfolio }}"/></td>
+                        <td><input type="checkbox" ng-model="mapping.watchlist" checked="{{ mapping.watchlist }}"/></td>
+                        <td><button class="btn-primary" ng-click="change(mapping)">Save Mapping</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table" style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Article Date</th>
+                        <th>Article Text</th>
+                        <th>Thoughts/Response</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for article in articlelist %}
+                        <tr>
+                            <td><a href="{{ url_for('getarticle', id=article.article_id) }}">{{ article.article_title }}</a></td>
+                            <td>{{ article.publication_date}}</td>
+                            <td><section style="height:400px; width:800px; overflow: auto" contenteditable="false">{{ article.article_text | safe}}</section></td>
+                            <td><section contenteditable="True">{{ article.thoughts_response | safe}}</section></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% block scripts %}
+        {{super()}}
+        <script src="/static/js/angular/strategyMapApp.js"></script>
+    {% endblock %}
+{% endblock %}

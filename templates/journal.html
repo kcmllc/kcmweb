@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% from "_formhelpers.html" import render_field %}
+{% block content %}
+
+    <div class="container" ng-app="journalEntryApp" ng-controller="JournalEntryCtrl" ng-init="post.nonwtf_csrf_token='{{ nonwtf_csrf_token() }}'">
+    {% raw %}
+        <h2 style="text-align: center">Trading Journal</h2>
+        <div class=" navbar-form row">
+        <button class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#journalModal">Add Journal
+            Entry
+        </button>
+        </div>
+        <div class="panel panel-default" ng-repeat="entry in entries">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ entry.title }}</h3>
+            </div>
+            <div class="panel-body">
+                <p>{{ entry.body }}</p>
+                written at {{entry.created_at.$date | date:'medium'}}
+                <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-sm btn-success" ng-click="update(entry)">Save</button>
+                    <button type="button" class="btn btn-sm btn-warning" ng-click="hide(entry)">Hide</button>
+                    <button type="button" class="btn btn-sm btn-danger" ng-click="delete(entry)">Delete</button>
+                </div>
+            </div>
+        </div>
+    {% endraw %}
+        <div class="modal fade" id="journalModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Add Journal Entry</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form novalidate class="form-horizontal">
+                            <div class="form-group">
+                                <label for="journaldate">Date:</label>
+                                <input type="datetime" id="journaldate" class="datechooser form-control"
+                                       ng-model="post.created_at"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="journaltitle">Title:</label>
+                                <input type="text" id="journaltitle" class="form-control" ng-model="post.title"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="journalbody">Text:</label>
+                                <textarea id="journalbody" class="form-control" ng-model="post.body"></textarea>
+                            </div>
+
+                            <button class="btn btn-sm btn-primary pull-right" ng-click="new(post)" data-dismiss="modal">Save Entry</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </div>
+
+
+{% block scripts %}
+    {{super()}}
+    <script src="/static/js/angular/journalEntryApp.js"></script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="row">
+        <form action="{{ url_for('searchfinintel') }}" method="post" class="navbar-form pull-right" role="form">
+            <div class="form-group">
+                <input type="text" class="form-control" id="ticker" name="ticker" placeholder="Enter ticker">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-default pull-right">Search</button>
+            </div>
+        </form>
+    </div>
+    {% block scripts %}
+        {{super()}}
+    {% endblock %}
+{% endblock %}

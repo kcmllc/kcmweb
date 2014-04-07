@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+S
+{% block content %}
+    {% raw %}
+    <div ng-app="tasksApp" ng-controller="TaskCtrl">
+        <table id="tasktable" ng-app="tasksApp" ng-controller="TaskCtrl">
+            <thead>
+            <tr>
+                <th>Task Title</th>
+                <th>Task Notes</th>
+                <th>Task Due Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="task in tasks">
+                <td>{{ task.title }}</td>
+                <td>{{ task.notes }}</td>
+                <td>{{ task.due | date:'short' }}</td>
+                <td>
+                    <button ng-click="deletetask({{ task.id }})">Delete Task</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button ng-click="refreshtasks()">Refresh Tasks</button>
+    </div>
+    {% endraw %}
+    {% block scripts %}
+        {{ super() }}
+        <script src="/static/js/angular/tasksApp.js"></script>
+    {% endblock %}
+{% endblock %}

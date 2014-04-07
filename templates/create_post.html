@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% from "_formhelpers.html" import render_field %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+            <form method=post action="{{ url_for('createpost') }}" role="form">
+                {{ postform.csrf_token }}
+                <div class="form-group">
+                    {{ render_field(postform.created_at,class="form-control datechooser") }}
+                </div>
+                <div class="form-group">
+                    {{ render_field(postform.title,class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ render_field(postform.body,class="form-control") }}
+                </div>
+
+                <p><input type=submit value="Save Post" class="btn pull-right"></p>
+
+            </form>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+{% endblock %}

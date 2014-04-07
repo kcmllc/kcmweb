@@ -1,0 +1,32 @@
+<html ng-app="journalEntryApp">
+<head>
+    <link rel="stylesheet" href="/static/bootstrap-3.0.0/dist/css/bootstrap.css">
+</head>
+<body style="padding-top: 70px" ng-controller="JournalEntryCtrl">
+<div class="container">
+    <form novalidate="" class="form-horizontal">
+        <input type="datetime" class="datechooser" ng-model="post.created_at"/>
+        <input type="text" ng-model="post.title"/>
+        <textarea ng-model="post.body"></textarea>
+        <button ng-click="update(post)">Save Entry</button>
+    </form>
+    <h2>Trading Journal</h2>
+    <div ng-repeat="entry in entries">
+        <h3>{{ entry.title }}</h3>
+        <p>{{ entry.body }}</p>
+        written at {{entry.entry.created_at}}
+    </div>
+</div>
+<script type=text/javascript src="/static/js/jquery-1.9.1.js"></script>
+<script type=text/javascript src="/static/js/jquery-ui-1.10.3.custom.js"></script>
+<script src="/static/bootstrap-3.0.0/dist/js/bootstrap.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
+<script src="/static/js/angular/controllers.js"></script>
+<script src="/static/js/angular/services.js"></script>
+
+
+</body>
+</html>
+
+
+

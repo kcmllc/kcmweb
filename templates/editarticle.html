@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% from "_formhelpers.html" import render_field, display_field %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+            <form method=post action="/article/{{ articlemodel.article_id }}" role="form">
+                {{ form.csrf_token }}
+                <div class="form-group">
+                    {{ render_field(form.publication_name,class="form-control", placeholder = articlemodel.publication_name,value = articlemodel.publication_name) }}
+                </div>
+                <div class="form-group">
+                    {{ render_field(form.publication_date,class="form-control datechooser",placeholder = articlemodel.publication_date,value = articlemodel.publication_date) }}
+                </div>
+                <div class="form-group">
+                    {{ render_field(form.article_title,class="form-control",placeholder = articlemodel.article_title,value = articlemodel.article_title)}}
+                </div>
+                <div class="form-group">
+                    {{ render_field(form.article_text,class="form-control", value = articlemodel.article_text)}}
+                </div>
+                <div class="form-group">
+                    {{ render_field(form.article_tags,class="form-control",placeholder = articlemodel.article_tags,value = articlemodel.article_tags) }}
+                </div>
+                <div class="form-group">
+                    {{ render_field(form.ticker,class="form-control",placeholder = articlemodel.ticker,value = articlemodel.ticker) }}
+                </div>
+                <div class="form-group">
+                    {{ render_field(form.thoughts_response,class="form-control",placeholder = articlemodel.thoughts_response,value = articlemodel.thoughts_response) }}
+                </div>
+
+                <p><input type=submit value="Save Article" class="btn pull-right" id="submitform"></p>
+
+            </form>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+
+
+
+{% block scripts %}
+{{super()}}
+     <script src="/static/ckeditor/ckeditor.js"></script>
+     <script>
+        CKEDITOR.replace( 'article_text', {
+            height: '500',
+            autoUpdateElement: true
+         });
+        var articletext = $('#article_text').val().toString();
+        //alert(articletext);
+        articletextinstance = CKEDITOR.instances.article_text;
+        articletextinstance.setData(articletext);
+        articletextinstance.on('change', function(){
+                   articletextinstance.updateElement();
+                   $('#article_text').val(this.getData());
+        });
+    </script>
+{% endblock %}
+{% endblock %}
